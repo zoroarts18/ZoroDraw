@@ -48,12 +48,6 @@ public class Pencil : MonoBehaviour
 
     private bool isDrawing = false;
     private bool canDraw = false;
-    private bool shapeForming = false;
-    public List<Vector2> currentShapeVert;
-    private SpriteCreator currentShapeFormer;
-    public GameObject ShapeFormer;
-    public Button ShapeFormerButton;
-    public LineRenderer ShapeFormerPreviewLine;
     private bool LineOn = false;
     private string Typ;
 
@@ -682,7 +676,7 @@ public class Pencil : MonoBehaviour
     }
     public void spawn()
     {
-        if(canDraw && !shapeForming && !LineOn && canDrawSomething)
+        if(canDraw && !LineOn && canDrawSomething)
         {
             if (Typ == "Eraser")
             {

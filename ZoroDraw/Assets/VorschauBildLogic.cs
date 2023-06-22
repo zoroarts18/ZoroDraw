@@ -9,7 +9,6 @@ public class VorschauBildLogic : MonoBehaviour
 
     void Start()
     {
-        
         GetComponentInChildren<Button>().onClick.AddListener(closeImage);
     }
 
