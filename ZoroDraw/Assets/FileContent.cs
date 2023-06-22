@@ -28,23 +28,9 @@ public class FileContent : MonoBehaviour
         GetComponentInChildren<Text>().text = FileName.ToString();
         GetComponent<Button>().onClick.AddListener(SelectThisFile);
     }
-
-    public void NewLayer()
-    {
-        GameObject newLayerBtn = Instantiate(LayerBtn) as GameObject;
-        currentLayerBtn = newLayerBtn.GetComponent<Button>();
-        currentLayerBtn.transform.parent = LayerBtnHolder;
-    }
-
-    public void DeleteLayer()
-    {
-
-    }
-
     public void DeleteFile()
     {
         p.DeletePage(GetComponent<Button>());
-        
     }
 
     public void SelectThisFile()

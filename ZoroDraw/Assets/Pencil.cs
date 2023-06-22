@@ -166,9 +166,9 @@ public class Pencil : MonoBehaviour
         HorBtn.onClick.AddListener(OrientationHor);
         SizePanel.SetActive(false);
         currentColor = Color.black;
-        PenButton.onClick.AddListener(PenWechsel);
-        EraserButton.onClick.AddListener(EraserWechsel);
-        BrushButton.onClick.AddListener(BrushWechsel);
+        PenButton.onClick.AddListener(PenSwitch);
+        EraserButton.onClick.AddListener(EraserSwitch);
+        BrushButton.onClick.AddListener(BrushSwitch);
         FillBtn.onClick.AddListener(Fill);
         ClearBtn.onClick.AddListener(Clear);
         closeAppButton.onClick.AddListener(closeApp);
@@ -184,7 +184,6 @@ public class Pencil : MonoBehaviour
         TransparencyToggle.GetComponentInChildren<Text>().text = "";
         CreateFileFinalBtn.onClick.AddListener(CreateNewFile);
         CreateFileBtn.onClick.AddListener(NewFile);
-        ShapeFormerButton.onClick.AddListener(ActivateShapeFormer);
         SpawnLineBtn.onClick.AddListener(ActivateLine);
         StartSectionBtn.onClick.AddListener(openStartUI);
         currentFieldColor = Color.black;
@@ -203,14 +202,12 @@ public class Pencil : MonoBehaviour
         CurColorIndicator.GetComponent<Outline>().effectColor = Color.black;
         CurColorPickerIndicator.GetComponent<Outline>().effectColor = Color.red;
     }
-
     public void chooseFieldColor()
     {
         currentColor = currentFieldColor;
         CurColorIndicator.GetComponent<Outline>().effectColor = Color.red;
         CurColorPickerIndicator.GetComponent<Outline>().effectColor = Color.black;
     }
-
     public void ActivateColorPicker()
     {
         if (!colorPickerColorChanging) colorPickerColorChanging = true;
@@ -237,7 +234,6 @@ public class Pencil : MonoBehaviour
         StartSectionBtn.GetComponent<Image>().color = FileBTNSelectedColor;
         currentFileBtn.GetComponent<Image>().color = FileBTNNormalColor;
     }
-
     public void ActivateLine()
     {
         toolSizeable = true;
@@ -250,7 +246,6 @@ public class Pencil : MonoBehaviour
         }
         SpawnLineBtn.interactable = false;
     }
-
     public void selectOtherFile(GameObject Btn)
     {
         canDrawSomething = true;
@@ -260,10 +255,7 @@ public class Pencil : MonoBehaviour
 
         if (currentFileBtn != null)
         {
-            foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines)
-            {
-                item.SetActive(false);
-            }
+            foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines) item.SetActive(false);
             currentFileBtn.GetComponent<Image>().color = FileBTNNormalColor;
         }
 
@@ -284,11 +276,7 @@ public class Pencil : MonoBehaviour
             RenderCam = RenderCamHor;
         }
 
-        foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines)
-        {
-            item.SetActive(true);
-        }
-
+        foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines) item.SetActive(true);
     }
 
     public void NewFile()
@@ -346,10 +334,7 @@ public class Pencil : MonoBehaviour
 
         if(currentFileBtn != null) currentFileBtn.GetComponent<Image>().color = FileBTNNormalColor;
 
-        if (OpenPages == 0)
-        {
-            StartUI.SetActive(false);
-        }
+        if (OpenPages == 0) StartUI.SetActive(false);
 
         if (Vert)
         {
@@ -368,10 +353,7 @@ public class Pencil : MonoBehaviour
         OpenPages++;
         if(currentFileBtn != null)
         {
-            foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines)
-            {
-                item.SetActive(false);
-            }
+            foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines) item.SetActive(false);
             currentFileBtn.GetComponent<Image>().color = FileBTNNormalColor;
         }
         StartSectionBtn.GetComponent<Image>().color = FileBTNNormalColor;
@@ -412,14 +394,11 @@ public class Pencil : MonoBehaviour
             RenderCam.targetTexture = RenderTexture.GetTemporary(1920,1080, 16);
         }
 
-        
-
         if (TransparencyOn) BG.SetActive(false);
         else BG.SetActive(true);
 
         RenderCam.GetComponent<Exporter>().takeScreenOnNextFrame = true;
     }
-
     public void Export()
     {
         if (currentFileBtn.GetComponent<FileContent>().Vert) RenderCam = RenderCamVert;
@@ -436,15 +415,10 @@ public class Pencil : MonoBehaviour
         ExportUI.SetActive(true);
         canDraw = false;
 
-        
-
         DrawCam.gameObject.SetActive(false);
         RenderCam.gameObject.SetActive(true);
 
-        foreach (var item in DrawUI)
-        {
-            item.SetActive(false);
-        }
+        foreach (var item in DrawUI) item.SetActive(false);
     }
     public void ToggleTransparency()
     {
@@ -459,7 +433,6 @@ public class Pencil : MonoBehaviour
             TransparencyToggle.GetComponentInChildren<Text>().text = "X";
         }
     }
-
     public void RenderDone()
     {
         canDrawSomething = true;
@@ -467,46 +440,12 @@ public class Pencil : MonoBehaviour
         ExportUI.SetActive(false);
         DrawCam.gameObject.SetActive(true);
         RenderCam.gameObject.SetActive(false);
-        foreach (var item in DrawUI)
-        {
-            item.SetActive(true);
-        }
+        foreach (var item in DrawUI) item.SetActive(true);
         canDraw = true;
         BG.SetActive(true);
     }
     #endregion
-    public void ActivateShapeFormer()
-    {
-        if(canDrawSomething)
-        {
-            currentCursor = null;
 
-            toolSizeable = false;
-            LineOn = false;
-            foreach (var item in ToolBtns)
-            {
-                item.interactable = true;
-            }
-            ShapeFormerButton.interactable = false;
-            GameObject NewShapeFormer = Instantiate(ShapeFormer, new Vector3(0, 0, -0.08f), Quaternion.identity);
-            currentShapeFormer = NewShapeFormer.GetComponent<SpriteCreator>();
-            currentFileBtn.GetComponent<FileContent>().Lines.Add(currentShapeFormer.gameObject);
-            shapeForming = true;
-        }
-        
-    }
-    public void CreateShape()
-    {
-        if(canDrawSomething)
-        {
-            shapeForming = false;
-            currentShapeFormer.CreateMesh(currentShapeVert);
-            currentShapeVert.Clear();
-            ShapeFormerPreviewLine.positionCount = 0;
-            currentShapeFormer = null;
-        }
-        
-    }
     public void Fill()
     {
         if(canDrawSomething)
@@ -535,10 +474,7 @@ public class Pencil : MonoBehaviour
             BG.GetComponent<SpriteRenderer>().color = Color.white;
 
             currentFileBtn.GetComponent<FileContent>().Erasers.Clear();
-            foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines)
-            {
-                Destroy(item);
-            }
+            foreach (var item in currentFileBtn.GetComponent<FileContent>().Lines) Destroy(item);
             currentFileBtn.GetComponent<FileContent>().Lines.Clear();
         }
     }
@@ -548,7 +484,6 @@ public class Pencil : MonoBehaviour
     }
     public void openSizePanel()
     {
-        
         if(toolSizeable)
         {
             canDrawSomething = false;
@@ -556,14 +491,13 @@ public class Pencil : MonoBehaviour
             SizePanel.SetActive(true);
             SizePanel.transform.position = Input.mousePosition;
         }
-        
     }
     public void closeSizePanel()
     {
         canDrawSomething = true;
         SizePanel.SetActive(false);
     }
-    public void BrushWechsel()
+    public void BrushSwitch()
     {
         if(canDrawSomething)
         {
@@ -572,15 +506,12 @@ public class Pencil : MonoBehaviour
             toolSizeable = true;
             LineOn = false;
             Typ = "Brush";
-            foreach (var item in ToolBtns)
-            {
-                item.interactable = true;
-            }
+            foreach (var item in ToolBtns) item.interactable = true;
             BrushButton.interactable = false;
         }
         
     }
-    public void EraserWechsel()
+    public void EraserSwitch()
     {
         if(canDrawSomething)
         {
@@ -589,15 +520,12 @@ public class Pencil : MonoBehaviour
             toolSizeable = true;
             LineOn = false;
             Typ = "Eraser";
-            foreach (var item in ToolBtns)
-            {
-                item.interactable = true;
-            }
+            foreach (var item in ToolBtns) item.interactable = true;
             EraserButton.interactable = false;
         }
         
     }
-    public void PenWechsel()
+    public void PenSwitch()
     {
         if(canDrawSomething)
         {
@@ -606,10 +534,7 @@ public class Pencil : MonoBehaviour
             toolSizeable = true;
             LineOn = false;
             Typ = "Pen";
-            foreach (var item in ToolBtns)
-            {
-                item.interactable = true;
-            }
+            foreach (var item in ToolBtns) item.interactable = true;
             PenButton.interactable = false;
         }
         
@@ -648,7 +573,6 @@ public class Pencil : MonoBehaviour
             CurColorIndicator.GetComponent<Outline>().effectColor = Color.black;
             CurColorPickerIndicator.GetComponent<Outline>().effectColor = Color.red;
         }
-
         if(Input.GetKeyDown(KeyCode.Alpha2) && canDrawSomething)
         {
             currentColor = currentFieldColor;
@@ -697,35 +621,11 @@ public class Pencil : MonoBehaviour
             currentLine.GetComponent<LineRenderer>().positionCount = 2;
             currentLine.GetComponent<LineRenderer>().SetPosition(1, new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -1));
         }
-        if (LineOn && Input.GetMouseButtonUp(0) && currentLine.GetComponent<LineRenderer>().positionCount == 2 && canDrawSomething)
-        {
-            currentLine = null;
-        }
+        if (LineOn && Input.GetMouseButtonUp(0) && currentLine.GetComponent<LineRenderer>().positionCount == 2 && canDrawSomething) currentLine = null;
 
+        if (Input.GetMouseButton(0) && canDrawSomething) canDraw = true;
 
-        if (Input.GetMouseButton(0) && canDrawSomething)
-        {
-            canDraw = true;
-            /*
-            if (Camera.main != null && !shapeForming)
-            {
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
-                if (hit.collider != null) 
-                else canDraw = false;
-            }
-            */
-        }
-        if(Input.GetMouseButtonDown(0) && canDrawSomething)
-        {
-            if (shapeForming)
-            {
-                ShapeFormerPreviewLine.positionCount++;
-                ShapeFormerPreviewLine.SetPosition(ShapeFormerPreviewLine.positionCount -1, new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -1));
-                currentShapeVert.Add(new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -1));
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && currentShapeVert.Count > 2) CreateShape();
+        //Moving around on Canvas:
         if (Input.GetKey(KeyCode.V)) canDraw = false;
         if (Input.GetKey(KeyCode.V) && Input.GetMouseButtonDown(0)) startPosSwipe = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if (Input.GetKey(KeyCode.V) && Input.GetMouseButton(0))
@@ -734,24 +634,22 @@ public class Pencil : MonoBehaviour
             var dir = startPosSwipe - EndPosSwipe;
             Camera.main.transform.position += dir;
         }
+
+        //"spawn" instantiates the Trail Renderer for Drawing (A Trail Renderer is following the Mouse now)
         if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && canDraw && canDrawSomething) spawn();
         if (Input.GetMouseButtonUp(0)) isDrawing = false;
+        
+        //Zooming:
+        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetAxisRaw("Mouse ScrollWheel") > 0 && Camera.main.orthographicSize < 15) Camera.main.orthographicSize++;
+        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetAxisRaw("Mouse ScrollWheel") < 0 && Camera.main.orthographicSize > 1) Camera.main.orthographicSize--;
+
+        //Tool Switch Shortcuts:
+        if (Input.GetKeyDown(KeyCode.E) && canDrawSomething) EraserSwitch();
+        if (Input.GetKeyDown(KeyCode.B) && canDrawSomething) BrushSwitch();
+        if(Input.GetKeyDown(KeyCode.P) && canDrawSomething) PenSwitch();
         if (Input.GetKeyDown(KeyCode.F) && canDrawSomething) Fill();
         if (Input.GetKeyDown(KeyCode.L) && canDrawSomething) ActivateLine();
 
-        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetAxisRaw("Mouse ScrollWheel") > 0 && Camera.main.orthographicSize < 15)
-        {
-      
-            Camera.main.orthographicSize++;
-        }
-        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetAxisRaw("Mouse ScrollWheel") < 0 && Camera.main.orthographicSize > 1)
-        {
-
-            Camera.main.orthographicSize--;
-        }
-        if (Input.GetKeyDown(KeyCode.E) && canDrawSomething) EraserWechsel();
-        if (Input.GetKeyDown(KeyCode.B) && canDrawSomething) BrushWechsel();
-        if(Input.GetKeyDown(KeyCode.P) && canDrawSomething) PenWechsel();
         if (SizePanel.activeInHierarchy && !EventSystem.current.IsPointerOverGameObject() && Input.GetMouseButtonDown(0))
         {
             canDrawSomething = true;
@@ -766,30 +664,20 @@ public class Pencil : MonoBehaviour
         if (isDrawing && canDraw) currentPen.transform.position = Camera.main.ScreenToWorldPoint(Input.mousePosition) + new Vector3(0, 0, 9);
         CurColorIndicator.color = currentFieldColor;
         CurColorPickerIndicator.color = currenPickerColor;
-        if (EventSystem.current.IsPointerOverGameObject())
-        {
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
-        }
 
-        else
-        {
-            Cursor.SetCursor(currentCursor, Vector2.zero, CursorMode.Auto);
-        }
+        //Change Cursor while hovering over UI:
+        if (EventSystem.current.IsPointerOverGameObject()) Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
+        else Cursor.SetCursor(currentCursor, Vector2.zero, CursorMode.Auto);
 
-
+        //Brush Values:
         var SizeVal = SizeSlider.value;
         var OpVal = OpacitySlider.value;
-
         SizeValue.text = SizeVal.ToString("F2");
         OpacityValue.text = OpVal.ToString("F2");
-
-
     }
     public void deleteAllLines()
     {
-        foreach (GameObject Line in currentFileBtn.GetComponent<FileContent>().Lines)
-            Destroy(Line);
-
+        foreach (GameObject Line in currentFileBtn.GetComponent<FileContent>().Lines) Destroy(Line);
         currentFileBtn.GetComponent<FileContent>().Lines.Clear();
     }
     public void spawn()

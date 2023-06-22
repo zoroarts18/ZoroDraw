@@ -10,7 +10,6 @@ public class LineDrawer : MonoBehaviour
 
     void Update()
     {
-
         if (currLine != null)
         {
             Vector2 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -22,15 +21,12 @@ public class LineDrawer : MonoBehaviour
             currLine = Instantiate(LinePenPref, this.transform.position, Quaternion.identity);
             drawn = true;
         }
-        
-
+       
         if (Input.GetMouseButtonUp(0))
         {
             if(currLine != null) currLine.GetComponent<LinePen>().ready = true;
             currLine = null;
         }
-
-        
     }
 
     public void EraseLine(GameObject Line, Vector2 point, List<Vector2> points)
