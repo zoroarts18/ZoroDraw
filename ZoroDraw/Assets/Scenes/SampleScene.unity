@@ -4036,7 +4036,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Pain(t) '
+  m_Text: ZoroDraw
 --- !u!222 &337549901
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12070,7 +12070,7 @@ MonoBehaviour:
     m_LineSpacing: 1
   m_Text: 'Made by:
 
-    Zoroarts_Dev'
+    Zoroarts'
 --- !u!222 &1049041620
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -13492,11 +13492,9 @@ MonoBehaviour:
   - {fileID: 2110602541}
   - {fileID: 1241236239}
   - {fileID: 1689155116}
-  - {fileID: 0}
   - {fileID: 879731253}
   - {fileID: 987195910}
   - {fileID: 939569924}
-  - {fileID: 0}
   SizePanel: {fileID: 754665199}
   SizeSlider: {fileID: 2113103562}
   OpacitySlider: {fileID: 2087584274}
@@ -13507,11 +13505,6 @@ MonoBehaviour:
   Eraser: {fileID: 1755210600222636138, guid: 1ab4e6f9960cfd347a6a1ce525b60782, type: 3}
   Brush: {fileID: 1755210600222636138, guid: 98a21c8fec1287c47ae6c80153010455, type: 3}
   ExportUI: {fileID: 495955069}
-  currentShapeVert: []
-  ShapeFormer: {fileID: 6487706282501429792, guid: bd5460217016e0e4494d108571b789e9,
-    type: 3}
-  ShapeFormerButton: {fileID: 0}
-  ShapeFormerPreviewLine: {fileID: 1995206209}
   BGVert: {fileID: 901363852}
   BGHor: {fileID: 596761150}
   BG: {fileID: 0}
